@@ -2,50 +2,68 @@
     require_once 'config.php';
     // include 'proses-register.php';
 
-    $err_password_msg = "";
+
+    $username = $name = $birth_date = $regency = $province = $religion = $role = "";
+    $err_password = $err_uname = "";
     $sql = "insert into data_akun (username, password, name, birth_date, regency, province, religion, role) values (?, ?, ?, ?, ?, ?, ?, ?)";
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    if($stmt = mysqli_prepare($conn, $sql)){
 
-if($stmt = mysqli_prepare($conn, $sql)){
+        mysqli_stmt_bind_param($stmt, "ssssssss", $username, $password, $name, $birth_date, $regency, $province, $religion, $role);
 
-    mysqli_stmt_bind_param($stmt, "ssssssss", $username, $password, $name, $birth_date, $regency, $province, $religion, $role);
-
-    $password_check = $_POST['password'];
-    $confirm_password = $_POST['confirm_password'];
-
-    if($password_check == $confirm_password){
-
-        // create a hashed password
-        $hashed_password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-
-        //binding parameter into prepare
-        $password = $hashed_password;
+        $password_check = $_POST['password'];
+        $confirm_password = $_POST['confirm_password'];
         $username = $_POST['username'];
         $name = $_POST['name'];
         $birth_date = $_POST['birth_date'];
         $regency = $_POST['regency'];
         $province = $_POST['province'];
         $religion = $_POST['religion'];
-        $role = "user";
 
-        // Attempt to execute the prepared statement
-        if(mysqli_stmt_execute($stmt)){
-            echo "Records inserted successfully.";
-            header("Location: login.php");
-        } else{
-            echo "ERROR: Could not execute query: $sql. " . mysqli_error($conn);
+        $confirm_uname = "SELECT username FROM data_akun WHERE username ='".$username."'";
+        if(!empty($_POST['password']) && !empty($_POST['username']) && !empty($_POST['birth_date']) && !empty($_POST['regency']) && !empty($_POST['province']) && !empty($_POST['religion'])){
+            if($result = mysqli_query($conn, $confirm_uname)){
+                if(mysqli_num_rows($result) == 0){
+            
+
+                    if($password_check == $confirm_password){
+
+                        // create a hashed password
+                        $hashed_password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
+                        //binding parameter into prepare
+                        $password = $hashed_password;
+                        
+                        
+                        
+                        $role = "user";
+
+                        // Attempt to execute the prepared statement
+                        if(mysqli_stmt_execute($stmt)){
+                            echo "Records inserted successfully.";
+                            header("Location: login.php");
+                        }else {
+                            echo "ERROR: Could not execute query: $sql. " . mysqli_error($conn);
+                        }
+                    }else {
+                        $err_password = "The password did not match.";
+                    }
+                } else{
+                    $err_uname = "The username is already taken.";
+                }
+            }
         }
-    } else {
-        $err_password_msg = "The password did not match";
-    }
-} else{
+    } else{
         echo "ERROR: Could not prepare query: $sql. " . mysqli_error($conn);
     }
- 
 // Close statement
 mysqli_stmt_close($stmt);
  
 // Close connection
 mysqli_close($conn);
+}
+ 
+
 
 
 ?>
@@ -70,7 +88,7 @@ mysqli_close($conn);
             <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
                 <label>Username</label>
                 <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
-                <!-- <span class="help-block"><?php echo $username_err; ?></span> -->
+                <span class="help-block"><?php echo $err_uname; ?></span>
             </div>    
 
             <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
@@ -81,8 +99,8 @@ mysqli_close($conn);
 
             <div class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
                 <label>Confirm Password</label>
-                <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
-                <span class="help-block"><?php echo $err_password_msg; ?></span>
+                <input type="password" name="confirm_password" class="form-control">
+                <span class="help-block"><?php echo $err_password; ?></span>
             </div>
 
             <div class="form-group <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>">
@@ -112,12 +130,12 @@ mysqli_close($conn);
             <div class="form-group <?php echo (!empty($religion_err)) ? 'has-error' : ''; ?>">
                 <label>Religion</label>
                 <select name="religion">
-                    <option value="islam">Islam</option>
-                    <option value="kristen protestan">Kristen Protestan</option>
-                    <option value="katolik">Katolik</option>
-                    <option value="hindu">Hindu</option>
-                    <option value="buddha">Buddha</option>
-                    <option value="kong hu cu">Kong Hu Cu</option>
+                    <option value="Islam">Islam</option>
+                    <option value="Kristen Protestan">Kristen Protestan</option>
+                    <option value="Katolik">Katolik</option>
+                    <option value="Hindu">Hindu</option>
+                    <option value="Buddha">Buddha</option>
+                    <option value="Kong Hu Cu">Kong Hu Cu</option>
                 </select>
                 <!-- <span class="help-block"><?php echo $religion_err; ?></span> -->
             </div> 

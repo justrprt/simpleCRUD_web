@@ -10,15 +10,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $username = $_POST['username'];
     $password = $_POST['password'];
-    $sql = "SELECT username, password FROM data_akun WHERE username ='".$username."'";
+    $sql = "SELECT username, password, role FROM data_akun WHERE username ='".$username."'";
 
     if($result = mysqli_query($conn, $sql)){
         if(mysqli_num_rows($result) == 1){
             $row = mysqli_fetch_array($result);
 
             if(password_verify($password, $row['password'])){
-                echo "logged in successfully";
-                header("Location: welcome-page.php");
+                if($row['role'] == 'user'){
+                    header("Location: user-dashboard.php");
+                }else{
+                    header("Location: admin-dashboard.php");
+                }
             }else{
                 $err_password_msg = "the password or username is incorrect";
             }
