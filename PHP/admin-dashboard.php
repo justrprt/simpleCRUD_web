@@ -23,7 +23,7 @@ include "config.php";
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="login.php">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">Link</a>
@@ -54,7 +54,7 @@ include "config.php";
 
 if(isset($_POST['search'])){
   $key = $_POST['search'];
-  $sql = "SELECT name, birth_date, regency, province, religion, role 
+  $sql = "SELECT username, name, birth_date, regency, province, religion, role 
         FROM data_akun
         WHERE name LIKE '%".$key."%' OR
               birth_date LIKE '%".$key."%' OR
@@ -65,7 +65,7 @@ if(isset($_POST['search'])){
         ORDER BY name";
 }else {
 
-  $sql = "SELECT name, birth_date, regency, province, religion, role 
+  $sql = "SELECT username, name, birth_date, regency, province, religion, role 
         FROM data_akun
         ORDER BY name";
 }
@@ -81,6 +81,7 @@ if($result = mysqli_query($conn, $sql)){
                 echo '<th scope="col">Province</th>';
                 echo '<th scope="col">Religion</th>';
                 echo '<th scope="col">Role</th>';
+                echo '<th scope="col">Action</th>';
             echo "</tr>";
         echo '</thead>';
         while($row = mysqli_fetch_array($result)){
@@ -91,6 +92,10 @@ if($result = mysqli_query($conn, $sql)){
                 echo "<td>" . $row['province'] . "</td>";
                 echo "<td>" . $row['religion'] . "</td>";
                 echo "<td>" . $row['role'] . "</td>";
+                echo "<td>" . 
+                "<a href='admin-edit.php?username=" . $row['username'] . "'>Edit</a>" . 
+                "<br>" . 
+                "<a href='admin-delete.php?username=" . $row['username'] . "'>Delete</a>" . "</td>";
             echo "</tr>";
         }
         echo "</table>";

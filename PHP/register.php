@@ -1,11 +1,14 @@
 <?php
-    require_once 'config.php';
-    // include 'proses-register.php';
+
+require_once 'config.php';
+// include 'proses-register.php';
 
 
-    $username = $name = $birth_date = $regency = $province = $religion = $role = "";
-    $err_password = $err_uname = "";
-    $sql = "insert into data_akun (username, password, name, birth_date, regency, province, religion, role) values (?, ?, ?, ?, ?, ?, ?, ?)";
+$username = $name = $birth_date = $regency = $province = $religion = $role = "";
+$err_password = $err_uname = "";
+$sql = "insert into data_akun (username, password, name, birth_date, regency, province, religion, role) values (?, ?, ?, ?, ?, ?, ?, ?)";
+
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     if($stmt = mysqli_prepare($conn, $sql)){
 
