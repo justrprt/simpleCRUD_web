@@ -3,8 +3,7 @@
 require_once 'config.php';
 
 
-
-$err_password = $err_uname = "";
+$err_password = $err_uname = $err_edit_pass = "";
 
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -19,34 +18,37 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	    $religion = $_POST['religion'];
 	    $role = $_POST['role'];
 
+	    if(!empty($password_check)){
+	    	$err_edit_pass = '';
+		    if($password_check == $confirm_password){
 
-	    if($password_check == $confirm_password){
+		        // create a hashed password
+		        $hashed_password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
-	        // create a hashed password
-	        $hashed_password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+		        //binding parameter into prepare
+		        $password = $hashed_password;
 
-	        //binding parameter into prepare
-	        $password = $hashed_password;
+		        $query = "UPDATE data_akun SET 
+		        password='". $password . "',
+		        name='". $name . "',
+		        birth_date='". $birth_date . "',
+		        regency='". $regency . "',
+		        province='". $province . "',
+		        role='". $role . "'
+				WHERE username='" . $username . "'";
 
-	        $query = "UPDATE data_akun SET 
-	        password='". $password . "',
-	        name='". $name . "',
-	        birth_date='". $birth_date . "',
-	        regency='". $regency . "',
-	        province='". $province . "',
-	        role='". $role . "'
-			WHERE username='" . $username . "'";
+				$run_it = mysqli_query($conn, $query);
 
-			echo $query;
-			$run_it = mysqli_query($conn, $query);
+				if($run_it){
+					header('Location: admin-dashboard.php');
+				}
 
-			if($run_it){
-				header('Location: admin-dashboard.php?status=success');
-			}
-
-	    }else{
-	    	$err_password = "The password did not match.";
-	    }
+		    }else{
+		    	$err_password = "The password did not match.";
+		    }
+		}else{
+			$err_edit_pass = 'please enter new password';
+		}
 	$conn->close();
 }
 ?>

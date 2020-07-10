@@ -19,9 +19,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $username = $_POST['username'];
         $name = $_POST['name'];
         $birth_date = $_POST['birth_date'];
+        // $date = str_replace("/", "-", $or_date);
+        // $birth_date = date("Y/m/d", strtotime($date));
         $regency = $_POST['regency'];
         $province = $_POST['province'];
-        $religion = $_POST['religion'];
+        $religion = isset($_POST['religion']) ? $_POST['religion'] : '';
 
         $confirm_uname = "SELECT username FROM data_akun WHERE username ='".$username."'";
         if(!empty($_POST['password']) && !empty($_POST['username']) && !empty($_POST['birth_date']) && !empty($_POST['regency']) && !empty($_POST['province']) && !empty($_POST['religion'])){
@@ -75,14 +77,33 @@ mysqli_close($conn);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
+    <link rel='stylesheet' type='text/css' href="main.css">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Title Page-->
     <title>Sign Up</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-    <style type="text/css">
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; }
-    </style>
+
+    <!-- Icons font CSS-->
+    <link href="register-page/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="register-page/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Vendor CSS-->
+    <link href="register-page/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="register-page/vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="register-page/css/main.css" rel="stylesheet" media="all">
 </head>
+
 <body>
+
+<!-- <div id="grid">
     <div class="wrapper">
         <h2>Sign Up</h2>
         <p>Please fill this form to create an account.</p>
@@ -97,7 +118,7 @@ mysqli_close($conn);
             <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
                 <label>Password</label>
                 <input type="password" name="password" class="form-control" >
-                <!-- <span class="help-block"><?php echo $password_err; ?></span> -->
+                
             </div>
 
             <div class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
@@ -109,30 +130,30 @@ mysqli_close($conn);
             <div class="form-group <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>">
                 <label>Name</label>
                 <input type="text" name="name" class="form-control" value="<?php echo $name; ?>">
-                <!-- <span class="help-block"><?php echo $name_err; ?></span> -->
+                
             </div>
 
             <div class="form-group <?php echo (!empty($birth_date_err)) ? 'has-error' : ''; ?>">
                 <label>Birth Date</label>
                 <input type="text" name="birth_date" class="form-control" value="<?php echo $birth_date; ?>" placeholder="YYYY-MM-DD">
-                <!-- <span class="help-block"><?php echo $birth_date_err; ?></span> -->
+                
             </div>
 
             <div class="form-group <?php echo (!empty($regency_err)) ? 'has-error' : ''; ?>">
                 <label>Regency</label>
                 <input type="text" name="regency" class="form-control" value="<?php echo $regency; ?>">
-                <!-- <span class="help-block"><?php echo $regency_err; ?></span> -->
+                
             </div>
 
             <div class="form-group <?php echo (!empty($province_err)) ? 'has-error' : ''; ?>">
                 <label>Province</label>
                 <input type="text" name="province" class="form-control" value="<?php echo $province; ?>">
-                <!-- <span class="help-block"><?php echo $province_err; ?></span> -->
+                
             </div>
 
             <div class="form-group <?php echo (!empty($religion_err)) ? 'has-error' : ''; ?>">
-                <label>Religion</label>
-                <select name="religion">
+                <label for="exampleFormControlSelect1">Religion</label>
+                <select name="religion" class="form-control" id="exampleFormControlSelect1">
                     <option value="Islam">Islam</option>
                     <option value="Kristen Protestan">Kristen Protestan</option>
                     <option value="Katolik">Katolik</option>
@@ -140,7 +161,7 @@ mysqli_close($conn);
                     <option value="Buddha">Buddha</option>
                     <option value="Kong Hu Cu">Kong Hu Cu</option>
                 </select>
-                <!-- <span class="help-block"><?php echo $religion_err; ?></span> -->
+                
             </div> 
 
             <div class="form-group">
@@ -149,6 +170,111 @@ mysqli_close($conn);
             </div>
             <p>Already have an account? <a href="login.php">Login here</a>.</p>
         </form>
-    </div>    
+    </div>
+</div>
+
+<script src="https://kit.fontawesome.com/38bd0759ac.js" crossorigin="anonymous"></script> -->
+
+
+<div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
+        <div class="wrapper wrapper--w680">
+            <div class="card card-4">
+                <div class="card-body">
+                    <h2 class="title">Registration Form</h2>
+                    <form method="post" action="">
+
+                        <!-- <div class="row row-space">
+                            <div class="col-2"> -->
+                                <div class="input-group">
+                                    <label class="label">username</label>
+                                    <input class="input--style-4" type="text" name="username" value="<?php echo $username; ?>"><span class="help-block"><?php echo $err_uname; ?></span>
+                                </div>
+                            <!-- </div>
+                        </div> -->
+
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">password</label>
+                                    <input class="input--style-4" type="password" name="password"><span class="help-block"><?php echo $err_password; ?></span>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">confirm password</label>
+                                    <input class="input--style-4" type="password" name="confirm_password">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">name</label>
+                                    <input class="input--style-4" type="text" name="name" value="<?php echo $name; ?>">
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">birth date</label>
+                                    <div class="input-group-icon">
+                                        <input class="input--style-4 js-datepicker" type="text" name="birth_date" value="<?php echo $birth_date; ?>" placeholder="DD/MM/YYYY">
+                                        <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row row-space">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">regency</label>
+                                    <input class="input--style-4" type="tex" name="regency" value="<?php echo $regency; ?>">
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">province</label>
+                                    <input class="input--style-4" type="text" name="province" value="<?php echo $province; ?>">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group <?php echo (!empty($religion_err)) ? 'has-error' : ''; ?>" >
+                            <label class="label">Religion</label>
+                            <div class="rs-select2 js-select-simple select--no-search">
+                                <select name="religion">
+                                    <option disabled="disabled" selected="selected" value="">Choose one</option>
+                                    <option value="Islam">Islam</option>
+                                    <option value="Kristen Protestan">Kristen Protestan</option>
+                                    <option value="Katolik">Katolik</option>
+                                    <option value="Hindu">Hindu</option>
+                                    <option value="Buddha">Buddha</option>
+                                    <option value="Kong Hu Cu">Kong Hu Cu</option>
+                                </select>
+                                <div class="select-dropdown"></div>
+                            </div>
+                        </div>
+
+                        <div class="p-t-15">
+                            <button class="btn btn--radius-2 btn--blue" type="submit">Submit</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jquery JS-->
+    <script src="register-page/vendor/jquery/jquery.min.js"></script>
+    <!-- Vendor JS-->
+    <script src="register-page/vendor/select2/select2.min.js"></script>
+    <script src="register-page/vendor/datepicker/moment.min.js"></script>
+    <script src="register-page/vendor/datepicker/daterangepicker.js"></script>
+
+    <!-- Main JS-->
+    <script src="register-page/js/global.js"></script>
+
 </body>
 </html>

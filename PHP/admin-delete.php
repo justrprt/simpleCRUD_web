@@ -1,7 +1,7 @@
 <?php
 
 require_once 'config.php';
-echo '<h4>Deleting Data</h4>';
+echo '<h4>Deleting Data</h4><br>';
 echo $_GET['username'];
 
 $key = $_GET['username'];
@@ -12,6 +12,6 @@ $query = "DELETE
     $run_it = mysqli_query($conn, $query);
 
     if($run_it){
-		echo 'successfully deleted.';
+		header('Location: admin-dashboard.php');
 	}
 ?>
