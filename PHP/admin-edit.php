@@ -205,13 +205,13 @@ include 'admin-proses-edit.php';
                         
                             <div class="col-2">
                                 <div class="input-group">
-                                    <label class="label">Permission</label>
+                                    <label class="label">Role</label>
                                     <div class="p-t-10">
                                         <label class="radio-container m-r-45">admin
                                             <input type="radio" name="role" value="admin" <?php echo ($row['role']=='admin')?'checked':'' ?>>
                                             <span class="checkmark"></span>
                                         </label>
-                                        <label class="radio-container">user
+                                        <label class="radio-container  m-r-45">user
                                             <input type="radio" name="role" value="user" <?php echo ($row['role']=='user')?'checked':'' ?>>
                                             <span class="checkmark"></span>
                                         </label>

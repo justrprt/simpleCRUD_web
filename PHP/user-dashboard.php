@@ -61,12 +61,12 @@ if(isset($_POST['search'])){
   $key = $_POST['search'];
   $sql = "SELECT username, name, birth_date, regency, province, religion, role 
         FROM data_akun
-        WHERE name LIKE '%".$key."%' OR
+        WHERE (name LIKE '%".$key."%' OR
               birth_date LIKE '%".$key."%' OR
               regency LIKE '%".$key."%' OR
               province LIKE '%".$key."%' OR
-              religion LIKE '%".$key."%' OR
-              role LIKE '%".$key."%'
+              religion LIKE '%".$key."%') AND
+              role != 'admin'
         ORDER BY name";
 }else {
 
@@ -90,7 +90,7 @@ if($result = mysqli_query($conn, $sql)){
                         echo '<th class="column1">Regency</th>';
                         echo '<th class="column1">Province</th>';
                         echo '<th class="column1">Religion</th>';
-                        echo '<th class="column1">Role</th>';
+                        // echo '<th class="column1">Role</th>';
                     echo "</tr>";
                 echo '</thead>';
                 echo '<tbody>';
@@ -101,7 +101,7 @@ if($result = mysqli_query($conn, $sql)){
                         echo "<td class='column1'>" . $row['regency'] . "</td>";
                         echo "<td class='column1'>" . $row['province'] . "</td>";
                         echo "<td class='column1'>" . $row['religion'] . "</td>";
-                        echo "<td class='column1'>" . $row['role'] . "</td>";
+                        // echo "<td class='column1'>" . $row['role'] . "</td>";
                     echo "</tr>";
                 }
                 echo '</tbody';
